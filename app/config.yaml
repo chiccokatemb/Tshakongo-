@@ -1,0 +1,16 @@
+ledstrip:
+  enabled: true
+  gpio: 18
+  count: 30
+  brightness: 0.5
+  order: "GRB"
+
+status_colors:
+  normal: "solid"
+  child: "rainbow"
+  sentinel: "white_pulse"
+  explore: "cyan_scan"
+  alert_intruder: "red_flash"
+  alert_danger: "red_fire"
+  low_battery: "orange_pulse"
+  ai_talk: "yellow_swirl"
