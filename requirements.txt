@@ -1,2 +1,8 @@
+flask
+flask-socketio
+eventlet
+opencv-python
+numpy
+PyYAML
 rpi_ws281x
 adafruit-circuitpython-neopixel

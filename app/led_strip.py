@@ -20,33 +20,32 @@ class LedStrip:
         self._pixels = neopixel.NeoPixel(getattr(board,f"D{pin}"), self.count,
                                          brightness=self.brightness, auto_write=False,
                                          pixel_order=self.order)
-        self._th = None; self._stop = threading.Event()
+        self._th=None; self._stop=threading.Event()
         self.set_effect("off")
 
     def shutdown(self):
         if not self.enabled: return
         self.set_effect("off"); self._pixels.fill((0,0,0)); self._pixels.show()
 
-    def _run_effect(self, target):
-        if not self.enabled: return
+    def _run(self, target):
         self._stop.set()
         if self._th and self._th.is_alive(): self._th.join(timeout=0.5)
         self._stop.clear()
-        self._th = threading.Thread(target=target, daemon=True); self._th.start()
+        self._th=threading.Thread(target=target,daemon=True); self._th.start()
 
-    def set_effect(self, name, color=None):
+    def set_effect(self, name):
         if not self.enabled: return
-        name = (name or "off").lower()
-        if name == "off":          return self._run_effect(self._fx_off)
-        if name == "solid":        return self._run_effect(lambda: self._fx_solid(color or COLOR_MAP["blue"]))
-        if name == "white_pulse":  return self._run_effect(lambda: self._fx_pulse(COLOR_MAP["white"]))
-        if name == "red_flash":    return self._run_effect(lambda: self._fx_flash(COLOR_MAP["red"],0.12))
-        if name == "red_fire":     return self._run_effect(self._fx_fire)
-        if name == "orange_pulse": return self._run_effect(lambda: self._fx_pulse(COLOR_MAP["orange"]))
-        if name == "cyan_scan":    return self._run_effect(lambda: self._fx_scanner(COLOR_MAP["cyan"]))
-        if name == "yellow_swirl": return self._run_effect(self._fx_swirl)
-        if name == "rainbow":      return self._run_effect(self._fx_rainbow)
-        return self._run_effect(lambda: self._fx_solid(COLOR_MAP.get(name,COLOR_MAP["blue"])))
+        n=(name or "off").lower()
+        if n=="off": return self._run(self._fx_off)
+        if n=="solid": return self._run(lambda:self._fx_solid(COLOR_MAP["blue"]))
+        if n=="white_pulse": return self._run(lambda:self._fx_pulse((255,255,255)))
+        if n=="red_flash": return self._run(lambda:self._fx_flash((255,0,0),0.12))
+        if n=="red_fire": return self._run(self._fx_fire)
+        if n=="orange_pulse": return self._run(lambda:self._fx_pulse((255,120,0)))
+        if n=="cyan_scan": return self._run(lambda:self._fx_scan((0,255,255)))
+        if n=="yellow_swirl": return self._run(self._fx_swirl)
+        if n=="rainbow": return self._run(self._fx_rainbow)
+        return self._run(lambda:self._fx_solid(COLOR_MAP.get(n,(0,0,255))))
 
     def _fx_off(self):
         while not self._stop.is_set():
@@ -66,7 +65,7 @@ class LedStrip:
         on=True
         while not self._stop.is_set():
             self._pixels.fill(c if on else (0,0,0)); self._pixels.show(); on=not on; self._stop.wait(per)
-    def _fx_scanner(self,c):
+    def _fx_scan(self,c):
         i=0; d=1
         while not self._stop.is_set():
             self._pixels.fill((0,0,0)); self._pixels[i]=c; self._pixels.show()

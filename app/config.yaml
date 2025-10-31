@@ -1,6 +1,13 @@
+server:
+  host: 0.0.0.0
+  port: 5000
+
+camera:
+  index: 0   # 0=CSI/USB auto; adapte si besoin
+
 ledstrip:
   enabled: true
-  gpio: 18
+  gpio: 18        # DIN
   count: 30
   brightness: 0.5
   order: "GRB"

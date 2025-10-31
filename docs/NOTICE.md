@@ -1,7 +1,6 @@
-# Tshakongo — Notice d'utilisation (Résumé)
-- Accès UI : `http://<IP>:5000/` → page **Modes**
-- Boutons : Sentinelle / Cartographie / Explorateur / LED Effets
-- Cartographie : démarre, le robot scanne; stop = carte sauvegardée dans `/maps/`
-- Explorateur : compte personnes (connues/inconnues), capteurs (gaz/T°/H°), photos danger dans `logs/`, rapport JSON `reports/`
-- LED WS2812B (GPIO18, alim 5V UBEC, GND commun, R=330Ω en série DIN, C=1000µF 5V↔GND)
-- États : Normal→bleu, Enfant→arc-en-ciel, Sentinelle→blanc pulsé, Alerte inconnue→rouge flash, Danger→feu, Batterie faible→orange pulsé.
+# Tshakongo — Notice rapide
+- UI : `http://<IP>:5000/`
+- Modes : Sentinelle / Cartographie / Explorateur
+- Cartographie : démarre → scan → Stop & Sauver → fichier dans `/maps/`
+- Explorateur : compte connus/inconnus (stub), vérifie capteurs (stub), enregistre alertes `logs/`, rapport JSON `reports/`
+- LED : bande WS2812B sur DIN=GPIO18 (R=330Ω en série), alim 5V UBEC, GND commun, C=1000µF entre 5V et GND

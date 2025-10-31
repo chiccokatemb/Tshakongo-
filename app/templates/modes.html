@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><title>Tshakongo — Modes</title>
+<h2>Tshakongo — Modes</h2>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
+  <button onclick="post('/api/mode/sentinel/start')">🛡 Sentinelle</button>
+  <button onclick="post('/api/mode/sentinel/stop')">⏹ Sentinelle OFF</button>
+  <button onclick="post('/api/mode/cartography/start')">🗺 Cartographie</button>
+  <button onclick="post('/api/mode/cartography/stop')">💾 Stop & Sauver</button>
+  <button onclick="post('/api/mode/explorer/start')">🧭 Explorateur</button>
+  <button onclick="post('/api/mode/explorer/stop')">⏹ Explorateur OFF</button>
+</div>
+<h3>Carte (aperçu)</h3>
+<canvas id="map" width="420" height="420" style="border:1px solid #333"></canvas>
+<h3>LED</h3>
+<select id="fx">
+  <option value="off">Off</option><option value="solid">Bleu fixe</option>
+  <option value="white_pulse">Sentinelle</option><option value="cyan_scan">Scanner</option>
+  <option value="red_flash">Alerte</option><option value="red_fire">Feu</option>
+  <option value="orange_pulse">Batterie faible</option><option value="yellow_swirl">Parle</option>
+  <option value="rainbow">Arc-en-ciel</option>
+</select>
+<button onclick="setFx()">Appliquer</button>
+<script type="module">
+import { drawMap } from "/static/js/map_live.js";
+const c=document.getElementById('map'); const s=io();
+function post(u){ fetch(u,{method:'POST'}) }
+function setFx(){ fetch('/api/led/effect/'+document.getElementById('fx').value,{method:'POST'}) }
+s.on("map_points",(d)=>drawMap(c,d.points||[]));
+s.on("explorer_done",(d)=>alert("Exploration terminée: "+JSON.stringify(d)));
+</script>
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
